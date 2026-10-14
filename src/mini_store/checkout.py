@@ -1,5 +1,9 @@
 """Checkout validation rules."""
 
+MAX_ITEMS = 50
+SUPPORTED_COUNTRIES = {"MX", "US"}
+SUPPORTED_PAYMENT_METHODS = {"card", "paypal"}
+
 
 def validate_checkout(
     item_count: int,
@@ -9,22 +13,16 @@ def validate_checkout(
     payment_method: str,
 ) -> tuple[bool, str]:
     """Validate whether an order may proceed to checkout."""
-    if item_count > 0:
-        if item_count <= 50:
-            if subtotal > 0:
-                if country in {"MX", "US"}:
-                    if postal_code.strip():
-                        if payment_method in {"card", "paypal"}:
-                            return True, "ok"
-                        else:
-                            return False, "unsupported payment method"
-                    else:
-                        return False, "postal code is required"
-                else:
-                    return False, "unsupported country"
-            else:
-                return False, "subtotal must be positive"
-        else:
-            return False, "too many items"
-    else:
+    if item_count <= 0:
         return False, "cart is empty"
+    if item_count > MAX_ITEMS:
+        return False, "too many items"
+    if subtotal <= 0:
+        return False, "subtotal must be positive"
+    if country not in SUPPORTED_COUNTRIES:
+        return False, "unsupported country"
+    if not postal_code.strip():
+        return False, "postal code is required"
+    if payment_method not in SUPPORTED_PAYMENT_METHODS:
+        return False, "unsupported payment method"
+    return True, "ok"
