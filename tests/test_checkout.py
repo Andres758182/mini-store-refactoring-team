@@ -1,6 +1,6 @@
 from mini_store.checkout import validate_checkout
 
-
+# a
 def test_valid_checkout_is_accepted():
     assert validate_checkout(3, 750, "MX", "44100", "card") == (True, "ok")
 
