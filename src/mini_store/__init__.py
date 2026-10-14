@@ -1,0 +1,1 @@
+"""Mini Store starter package."""
