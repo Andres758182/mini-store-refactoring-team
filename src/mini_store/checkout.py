@@ -13,11 +13,12 @@ def validate_checkout(
     payment_method: str,
 ) -> tuple[bool, str]:
     """Validate whether an order may proceed to checkout."""
-    if item_count <= 0:
+    # "not x > 0" (instead of "x <= 0") also rejects NaN, like the original code.
+    if not item_count > 0:
         return False, "cart is empty"
     if item_count > MAX_ITEMS:
         return False, "too many items"
-    if subtotal <= 0:
+    if not subtotal > 0:
         return False, "subtotal must be positive"
     if country not in SUPPORTED_COUNTRIES:
         return False, "unsupported country"
