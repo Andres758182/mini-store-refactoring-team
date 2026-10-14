@@ -1,8 +1,8 @@
 """Checkout validation rules."""
 
 MAX_ITEMS = 50
-SUPPORTED_COUNTRIES = {"MX", "US"}
-SUPPORTED_PAYMENT_METHODS = {"card", "paypal"}
+SUPPORTED_COUNTRIES = frozenset({"MX", "US"})
+SUPPORTED_PAYMENT_METHODS = frozenset({"card", "paypal"})
 
 
 def validate_checkout(
