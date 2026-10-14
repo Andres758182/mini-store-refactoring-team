@@ -133,3 +133,22 @@ def test_postal_code_error_is_reported_before_payment_error():
         False,
         "postal code is required",
     )
+
+
+
+
+# --- Invalid numbers (NaN) ---
+
+
+def test_nan_subtotal_is_rejected():
+    assert validate_checkout(3, float("nan"), "MX", "44100", "card") == (
+        False,
+        "subtotal must be positive",
+    )
+
+
+def test_nan_item_count_is_treated_as_empty_cart():
+    assert validate_checkout(float("nan"), 750, "MX", "44100", "card") == (
+        False,
+        "cart is empty",
+    )
