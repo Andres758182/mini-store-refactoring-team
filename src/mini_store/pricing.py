@@ -1,5 +1,18 @@
 """Pricing rules for orders."""
 
+def calculate_shipping(discounted_subtotal, country):
+    """Return the shipping cost based on the discounted subtotal and country."""
+    if country == "MX":
+        if discounted_subtotal >= 1000:
+            shipping = 0.0
+        else:
+            shipping = 99.0
+    else:
+        if discounted_subtotal >= 2000:
+            shipping = 199.0
+        else:
+            shipping = 299.0
+    return shipping
 
 def calculate_order_total(
     subtotal: float,
@@ -30,15 +43,6 @@ def calculate_order_total(
     else:
         tax = 0.0
 
-    if country == "MX":
-        if discounted_subtotal >= 1000:
-            shipping = 0.0
-        else:
-            shipping = 99.0
-    else:
-        if discounted_subtotal >= 2000:
-            shipping = 199.0
-        else:
-            shipping = 299.0
+    shipping = calculate_shipping(discounted_subtotal, country)
 
     return round(discounted_subtotal + tax + shipping, 2)
