@@ -14,13 +14,9 @@ def calculate_shipping(discounted_subtotal, country):
             shipping = 299.0
     return shipping
 
-def calculate_order_total(
-    subtotal: float,
-    customer_type: str,
-    coupon_code: str | None,
-    country: str,
-) -> float:
-    """Return the final order total after discounts, tax, and shipping."""
+
+def calculate_discount(subtotal: float, customer_type: str, coupon_code: str | None) -> float:
+    """Return the total discount based on customer type and coupons."""
     discount = 0.0
 
     if customer_type == "premium":
@@ -32,6 +28,18 @@ def calculate_order_total(
         discount += subtotal * 0.05
     elif coupon_code == "SAVE20" and subtotal >= 1500:
         discount += subtotal * 0.20
+
+    return discount
+
+
+def calculate_order_total(
+    subtotal: float,
+    customer_type: str,
+    coupon_code: str | None,
+    country: str,
+) -> float:
+    """Return the final order total after discounts, tax, and shipping."""
+    discount = calculate_discount(subtotal, customer_type, coupon_code)
 
     discounted_subtotal = subtotal - discount
 
